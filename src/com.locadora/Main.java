@@ -118,7 +118,7 @@ public class Main {
 
                 System.out.print("Selecione o número do veículo: ");
                 int vIdx = Integer.parseInt(scanner.nextLine());
-                System.out.print("Dias pretendidos de locação: ");
+                System.out.print("Dias de locação: ");
                 int dias = Integer.parseInt(scanner.nextLine());
 
                 try {
@@ -127,7 +127,7 @@ public class Main {
                     System.out.println("\n✅ Locação realizada com sucesso!");
                     System.out.println("Valor parcial estimado (sem multas): R$ " + l.getValorTotal());
                 } catch (Exception e) {
-                    System.out.println("\n❌ ERRO DE REGRA DE NEGÓCIO: " + e.getMessage());
+                    System.out.println("\n❌ ERRO: " + e.getMessage());
                 }
 
             } else if (op.equals("2")) {
@@ -170,7 +170,7 @@ public class Main {
                     }
 
                     if (placaJaExiste) {
-                        System.out.println("\n❌ ERRO DE REGRA DE NEGÓCIO: A placa " + placaInput + " já está cadastrada.");
+                        System.out.println("\n❌ ERRO: A placa " + placaInput + " já está cadastrada.");
                         continue;
                     }
 
