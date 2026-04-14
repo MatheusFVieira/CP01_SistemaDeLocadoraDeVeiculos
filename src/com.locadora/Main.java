@@ -15,11 +15,11 @@ public class Main {
 
         //Frota
         List<Veiculo> frota = new ArrayList<>(Arrays.asList(
-                new Veiculo("ABC-001", "Fiat Mobi", "Fiat", 2022, CategoriaVeiculo.ECONOMICO),
-                new Veiculo("DEF-002", "VW Virtus", "VW", 2023, CategoriaVeiculo.INTERMEDIARIO),
-                new Veiculo("GHI-003", "BMW 320i", "BMW", 2024, CategoriaVeiculo.EXECUTIVO),
-                new Veiculo("JKL-004", "Yamaha Fazer", "Yamaha", 2023, CategoriaVeiculo.MOTO),
-                new Veiculo("MNO-005", "Ford Transit", "Ford", 2021, CategoriaVeiculo.VAN)
+                new Veiculo("AHJ-4834", "Fiat Mobi", "Fiat", 2022, CategoriaVeiculo.ECONOMICO),
+                new Veiculo("HDI-7536", "VW Virtus", "VW", 2023, CategoriaVeiculo.INTERMEDIARIO),
+                new Veiculo("DJI-4624", "BMW 320i", "BMW", 2024, CategoriaVeiculo.EXECUTIVO),
+                new Veiculo("JKE-4621", "Yamaha Fazer", "Yamaha", 2023, CategoriaVeiculo.MOTO),
+                new Veiculo("MSK-4628", "Ford Transit", "Ford", 2021, CategoriaVeiculo.VAN)
         ));
 
         //Clientes
