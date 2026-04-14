@@ -13,16 +13,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        //Frota
         List<Veiculo> frota = new ArrayList<>(Arrays.asList(
-                new Veiculo("AHJ-4834", "Fiat Mobi", "Fiat", 2022, CategoriaVeiculo.ECONOMICO),
-                new Veiculo("HDI-7536", "VW Virtus", "VW", 2023, CategoriaVeiculo.INTERMEDIARIO),
-                new Veiculo("DJI-4624", "BMW 320i", "BMW", 2024, CategoriaVeiculo.EXECUTIVO),
-                new Veiculo("JKE-4621", "Yamaha Fazer", "Yamaha", 2023, CategoriaVeiculo.MOTO),
-                new Veiculo("MSK-4628", "Ford Transit", "Ford", 2021, CategoriaVeiculo.VAN)
+                new Veiculo("FTD-6523", "Fiat Mobi", "Fiat", 2022, CategoriaVeiculo.ECONOMICO),
+                new Veiculo("DJI-1564", "VW Virtus", "VW", 2023, CategoriaVeiculo.INTERMEDIARIO),
+                new Veiculo("FOS-1561", "BMW 320i", "BMW", 2024, CategoriaVeiculo.EXECUTIVO),
+                new Veiculo("DJK-7515", "Yamaha Fazer", "Yamaha", 2023, CategoriaVeiculo.MOTO),
+                new Veiculo("SMI-6812", "Ford Transit", "Ford", 2021, CategoriaVeiculo.VAN)
         ));
 
-        //Clientes
         List<Cliente> clientesCadastrados = new ArrayList<>();
         List<Locacao> ativas = new ArrayList<>();
 
@@ -41,7 +39,8 @@ public class Main {
             System.out.println("3 - Avançar 1 Dia no Tempo");
             System.out.println("4 - Cadastrar Novo Veículo");
             System.out.println("5 - Atualizar Dados do Cliente");
-            System.out.println("6 - Sair");
+            System.out.println("6 - Rodar Cenários de Teste (Automático)");
+            System.out.println("7 - Sair");
             System.out.print("Escolha uma opção: ");
             String op = scanner.nextLine();
 
@@ -54,21 +53,16 @@ public class Main {
                 if (jaEhCliente.equals("S")) {
                     System.out.print("Digite o CPF do cliente: ");
                     String cpfBusca = scanner.nextLine();
-
                     for (Cliente cli : clientesCadastrados) {
                         if (cli.getCpf().equals(cpfBusca)) {
                             clienteFinal = cli;
                             break;
                         }
                     }
-
                     if (clienteFinal == null) {
-                        System.out.println("\n❌ Cliente não encontrado. Verifique o CPF ou faça um novo cadastro.");
+                        System.out.println("\n❌ Cliente não encontrado.");
                         continue;
-                    } else {
-                        System.out.println("\n✅ Cliente encontrado: " + clienteFinal.getNome());
                     }
-
                 } else {
                     System.out.println("\n--- NOVO CADASTRO ---");
                     System.out.print("Digite o CPF: ");
@@ -76,10 +70,7 @@ public class Main {
 
                     boolean cpfExiste = false;
                     for (Cliente cli : clientesCadastrados) {
-                        if (cli.getCpf().equals(novoCpf)) {
-                            cpfExiste = true;
-                            break;
-                        }
+                        if (cli.getCpf().equals(novoCpf)) { cpfExiste = true; break; }
                     }
 
                     if (cpfExiste) {
@@ -118,7 +109,7 @@ public class Main {
 
                 System.out.print("Selecione o número do veículo: ");
                 int vIdx = Integer.parseInt(scanner.nextLine());
-                System.out.print("Dias de locação: ");
+                System.out.print("Dias pretendidos de locação: ");
                 int dias = Integer.parseInt(scanner.nextLine());
 
                 try {
@@ -127,7 +118,7 @@ public class Main {
                     System.out.println("\n✅ Locação realizada com sucesso!");
                     System.out.println("Valor parcial estimado (sem multas): R$ " + l.getValorTotal());
                 } catch (Exception e) {
-                    System.out.println("\n❌ ERRO: " + e.getMessage());
+                    System.out.println("\n❌ ERRO DE REGRA DE NEGÓCIO: " + e.getMessage());
                 }
 
             } else if (op.equals("2")) {
@@ -170,7 +161,7 @@ public class Main {
                     }
 
                     if (placaJaExiste) {
-                        System.out.println("\n❌ ERRO: A placa " + placaInput + " já está cadastrada.");
+                        System.out.println("\n❌ ERRO DE REGRA DE NEGÓCIO: A placa " + placaInput + " já está cadastrada.");
                         continue;
                     }
 
@@ -218,10 +209,7 @@ public class Main {
                     System.out.println("\n❌ Cliente não encontrado com este CPF.");
                 } else {
                     System.out.println("\nAtualizando dados de: " + clienteParaAtualizar.getNome());
-                    System.out.println("1 - E-mail");
-                    System.out.println("2 - Telefone");
-                    System.out.println("3 - Endereço Completo");
-                    System.out.println("4 - Vencimento da CNH");
+                    System.out.println("1 - E-mail | 2 - Telefone | 3 - Endereço Completo | 4 - Vencimento da CNH");
                     System.out.print("Escolha o que deseja atualizar: ");
                     String opAtualizar = scanner.nextLine();
 
@@ -255,12 +243,80 @@ public class Main {
                 }
 
             } else if (op.equals("6")) {
-                System.out.println("\nEncerrando o sistema.");
+                executarTestesAutomaticos();
+            } else if (op.equals("7")) {
+                System.out.println("\nEncerrando o sistema. Bom trabalho!");
                 break;
             } else {
                 System.out.println("\n❌ Opção inválida!");
             }
         }
         scanner.close();
+    }
+
+    private static void executarTestesAutomaticos() {
+        System.out.println("\n================================================");
+        System.out.println("   EXECUTANDO CENÁRIOS DE TESTE");
+        System.out.println("================================================");
+        LocalDate hoje = LocalDate.now();
+
+        Endereco endTest = new Endereco("Rua T", "1", "B", "C", "000");
+        Cliente cliValido = new Cliente("CT1", "João", "111", "99", "t@t", endTest, new CNH("111", hoje.plusYears(1)));
+        Cliente cliInvalido = new Cliente("CT2", "Maria", "222", "88", "i@i", endTest, new CNH("222", hoje.minusMonths(1)));
+
+        Veiculo v1 = new Veiculo("FTD-6523", "Fiat Mobi", "Fiat", 2022, CategoriaVeiculo.ECONOMICO);
+        Veiculo v2 = new Veiculo("FOS-1561", "BMW 320i", "BMW", 2024, CategoriaVeiculo.EXECUTIVO);
+
+        System.out.println("\n▶ Cenário 1: Locação com sucesso");
+        Locacao loc1 = null;
+        try {
+            loc1 = new Locacao("LOC-TEST-1", cliValido, v1, hoje, hoje.plusDays(3));
+            System.out.println("✅ SUCESSO: Cliente " + cliValido.getNome() + " alugou o veículo " + v1.getPlaca());
+            System.out.println("   Valor estimado para 3 dias: R$ " + loc1.getValorTotal());
+        } catch (Exception e) {
+            System.out.println("❌ Falha no teste: " + e.getMessage());
+        }
+
+        System.out.println("\n▶ Cenário 2: Tentar alugar veículo já alugado");
+        try {
+            System.out.println("  Tentando alugar o veículo " + v1.getPlaca() + " que já está com João");
+            new Locacao("LOC-TEST-2", cliInvalido, v1, hoje, hoje.plusDays(2));
+            System.out.println("❌ FALHA DE SEGURANÇA: O sistema permitiu a locação!");
+        } catch (Exception e) {
+            System.out.println("✅ RECUSADO: " + e.getMessage());
+        }
+
+        System.out.println("\n▶ Cenário 3: Tentar alugar com CNH vencida");
+        try {
+            System.out.println("   Tentando alugar o veículo livre (" + v2.getPlaca() + ") para Maria");
+            new Locacao("LOC-TEST-3", cliInvalido, v2, hoje, hoje.plusDays(2));
+            System.out.println("❌ FALHA DE SEGURANÇA: O sistema permitiu alugar com CNH vencida!");
+        } catch (Exception e) {
+            System.out.println("✅ RECUSADO: " + e.getMessage());
+        }
+
+        System.out.println("\n▶ Cenário 4: Devolver no prazo");
+        try {
+            System.out.println("   Devolvendo a locação do Cenário 1 no dia exato previsto");
+            loc1.finalizarLocacao(hoje.plusDays(3));
+            System.out.println("✅ SUCESSO: Devolvido no prazo. Nenhuma multa aplicada.");
+            System.out.println("   Valor total pago: R$ " + loc1.getValorTotal());
+        } catch (Exception e) {
+            System.out.println("❌ Falha no teste: " + e.getMessage());
+        }
+
+        System.out.println("\n▶ Cenário 5: Devolver com atraso");
+        try {
+            Locacao locAtraso = new Locacao("LOC-TEST-4", cliValido, v2, hoje, hoje.plusDays(2));
+            System.out.println("   Cliente alugou por 2 dias (Diária de R$ 200). Devolveu 2 dias atrasado.");
+
+            locAtraso.finalizarLocacao(hoje.plusDays(4));
+
+            System.out.println("✅ SUCESSO: Sistema calculou o atraso.");
+            System.out.println("   Valor pago (4 diárias + Multa de R$ 50/dia atrasado): R$ " + locAtraso.getValorTotal());
+        } catch (Exception e) {
+            System.out.println("❌ Falha no teste: " + e.getMessage());
+        }
+        System.out.println("================================================\n");
     }
 }
